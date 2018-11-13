@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Jeu2Des;
 
 namespace Jeu2Des
 {
@@ -13,39 +12,50 @@ namespace Jeu2Des
     /// A chaque lancer, si le total des dés est égal à 7 ==> le joueur marque 10 points à son score
     /// Une fois la partie terminée le nom du joeur et son score sont enregistrés dans le classement 
     /// </summary>   
-     public class Jeu
+    public class Jeu
     {
-       
+
         private Joueur _Joueur;
+        public Joueur Joueur
+        {
+            get { return _Joueur; }
+        }
+        public Classement Classement;
 
         /// <summary>
         /// Représente le joueur courant (celui qui joue une partie)
         /// </summary>
         /// <returns>Le joueur de la partie ou null si aucune partie n'est démarrée</returns>        
-        public Joueur Joueur
-        {
-            get{return _Joueur;}       
-        }
-    
+
+
+
+
         private De[] _Des = new De[2];
-        public Classement Classement { get; set; }
 
 
         /// <summary>
         /// Crée un jeu de 2 Dés avec un classement
         /// </summary> 
-        public Jeu()
+        public Jeu() :this("Binaire")
         {
-
+            //_Des[0] = new De();
+            //_Des[1] = new De();
+            ////Classement = new ClassementBinaire();
+            ////FabriqueClassement fabrique = FabriqueClassement.GetFabriqueClassementInstance();
+            ////fabrique.GetClassement();
+        }
+        public Jeu(string serial)
+        {
             //A la création du jeu : les 2 dés sont crées 
             //On aurait pu créer les 2 Des juste au moment de jouer  
             _Des[0] = new De();
             _Des[1] = new De();
-            Classement = new Classement();
+            FabriqueClassement fabrique = FabriqueClassement.GetFabriqueClassementInstance();
+            Classement = fabrique.GetClassement(serial);
 
+            Classement.Load();
         }
 
-       
         /// <summary>
         /// Permet de faire une partie du jeu de dés en indiquant le nom du joueur
         /// </summary>
@@ -56,9 +66,16 @@ namespace Jeu2Des
             //Le joueur est créé quand la partie démarre
             _Joueur = new Joueur(nom);
 
+
+
             //On fait jouer le joueur en lui passant les 2 dés
             int resultat = _Joueur.Jouer(_Des);
-           
+
+            Entree e1 = new Entree(_Joueur.Nom, resultat);
+
+            Classement.AjouterEntree(e1);
+
+
         }
 
         /// <summary>
@@ -71,13 +88,31 @@ namespace Jeu2Des
             //Le joueur est créé quand la partie démarre
             _Joueur = new Joueur();
 
+
             //Le joueur Joue et on récupère son score
             int resultat = _Joueur.Jouer(_Des);
-            
+
+            Entree ei = new Entree(_Joueur.Nom, resultat);
+
+            Classement.AjouterEntree(ei);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void VoirClassement()
         {
-            Console.WriteLine(Classement);
+            Classement.TopN();
         }
+
+        public void Terminer()
+        {
+            Classement.Save();
+        }
+
     }
 }
+
+
+
+

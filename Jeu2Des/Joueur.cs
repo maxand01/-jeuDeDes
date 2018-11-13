@@ -84,7 +84,6 @@ namespace Jeu2Des
             return _Score;
         }
 
-        
         /// <summary>
         /// Affiche le nom du joueur et son score 
         /// </summary>
