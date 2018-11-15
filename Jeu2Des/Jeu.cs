@@ -66,7 +66,7 @@ namespace Jeu2Des
             //Le joueur est créé quand la partie démarre
             _Joueur = new Joueur(nom);
 
-
+            
 
             //On fait jouer le joueur en lui passant les 2 dés
             int resultat = _Joueur.Jouer(_Des);

@@ -14,7 +14,7 @@ namespace Testeur
         
         public static void Main(string[] args)
         {
-                       
+             
             //Le jeu est crée (avec ses 2 des et son classement)
             Jeu MonJeu = new Jeu("Json");         
 
